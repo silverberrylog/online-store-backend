@@ -18,4 +18,11 @@ export class AuthService {
             data: { email, password: hashedPassword },
         })
     }
+
+    async deleteUser(email: string) {
+        const count = await this.prisma.users.count({ where: { email } })
+        if (count === 0) throw new Error(authErrors.deleteUser.userDoesNotExist)
+        
+        await this.prisma.users.delete({ where: { email } })
+    }
 }

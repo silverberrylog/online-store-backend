@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { Test, TestingModule } from '@nestjs/testing'
 import { createUser } from 'src/test-utils/createUser'
 import { AuthController } from './auth.controller'
@@ -33,6 +34,28 @@ describe('/auth', () => {
             await expect(createUserFn).rejects.toThrow(
                 authErrors.createUser.emailIsInUse
             )
+        })
+    })
+
+    describe('POST /delete-user', () => {
+        it('should delete a user', async () => {
+            const { inputData } = await createUser(authController)
+
+            const res = await authController.deleteUser({
+                email: inputData.email,
+            })
+
+            expect(res).toBeUndefined()
+        })
+
+        it('should not delete a user that does not exist', async () => {
+            await authController
+                .deleteUser({ email: faker.internet.email() })
+                .catch(err => {
+                    expect(err.message).toEqual(
+                        authErrors.deleteUser.userDoesNotExist
+                    )
+                })
         })
     })
 })

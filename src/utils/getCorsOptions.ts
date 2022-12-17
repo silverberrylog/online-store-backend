@@ -1,4 +1,4 @@
-const protectedUrls = ['/auth/create-user']
+const protectedUrls = ['/auth/create-user', '/auth/delete-user']
 const allowedRemoteAddresses = ['127.0.0.1', '::ffff:127.0.0.1', '::1']
 
 export const getCorsOptions = (req, callback) => {
